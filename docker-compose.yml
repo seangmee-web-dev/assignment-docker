@@ -1,0 +1,64 @@
+version: "3"
+
+services:
+  api_dev:
+    build: ./api
+    container_name: api_dev
+    ports:
+      - "8081:8081"
+    environment:
+      - FLASK_ENV=dev
+      - MYSQL_HOST=db_dev
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=db4dev$
+      - MYSQL_DB=dev_db
+    depends_on:
+      - db_dev
+
+  api_test:
+    build: ./api
+    container_name: api_test
+    ports:
+      - "8082:8081"
+    environment:
+      - FLASK_ENV=test
+      - MYSQL_HOST=db_test
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=db4test$
+      - MYSQL_DB=test_db
+    depends_on:
+      - db_test
+
+  db_dev:
+    image: mysql:8.0
+    container_name: db_dev
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: dev_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: db4dev$
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_dev_data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d/ # Mount the SQL file here
+    command: --default-authentication-plugin=mysql_native_password
+
+  db_test:
+    image: mysql:8.0
+    container_name: db_test
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: db4test$
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_test_data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d/ # Mount the SQL file here
+    command: --default-authentication-plugin=mysql_native_password
+
+volumes:
+  db_dev_data:
+  db_test_data:
