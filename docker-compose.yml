@@ -41,7 +41,7 @@ services:
       - "3306:3306"
     volumes:
       - db_dev_data:/var/lib/mysql
-      - ./sql:/docker-entrypoint-initdb.d/ # Mount the SQL file here
+      - ./sql:/docker-entrypoint-initdb.d/ # Mount SQL
     command: --default-authentication-plugin=mysql_native_password
 
   db_test:
@@ -56,7 +56,7 @@ services:
       - "3307:3306"
     volumes:
       - db_test_data:/var/lib/mysql
-      - ./sql:/docker-entrypoint-initdb.d/ # Mount the SQL file here
+      - ./sql:/docker-entrypoint-initdb.d/ # Mount SQL
     command: --default-authentication-plugin=mysql_native_password
 
 volumes:
