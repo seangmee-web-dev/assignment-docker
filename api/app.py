@@ -37,7 +37,6 @@ def connect_to_database():
             retries -= 1
     raise Exception("Failed to connect to MySQL after multiple attempts")
 
-# Initialize MySQL connection
 db = connect_to_database()
 
 @app.route("/")
